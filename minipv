@@ -1,0 +1,273 @@
+#!/bin/sh
+export TERM=xterm-256color
+
+args=(
+  --clearenv
+  --unshare-all
+
+  --size 90000000000 --tmpfs /
+
+  --ro-bind sniper-runtime/files /usr
+
+  --dev-bind /dev /dev
+  --bind /opt /opt
+  --proc /proc
+  --bind /run/user /run/user
+  --bind /srv /srv
+  --bind /sys /sys
+  --bind /tmp /tmp
+  --bind /var /var
+
+  --symlink usr/bin /bin
+  --symlink usr/sbin /sbin
+  --symlink usr/lib /lib
+  --symlink usr/lib32 /lib32
+  --symlink usr/lib64 /lib64
+
+  # host
+  --ro-bind /usr /run/host/usr
+
+  # /etc
+  --ro-bind /etc/fonts /etc/fonts
+
+  # fake configs
+  --file 11 /etc/passwd
+  --file 12 /etc/group
+  --file 13 /etc/machine-id
+
+  # env
+  --setenv DISPLAY $DISPLAY
+  --setenv WAYLAND_DISPLAY $WAYLAND_DISPLAY
+  --setenv XDG_RUNTIME_DIR $XDG_RUNTIME_DIR
+  --setenv XDG_DATA_DIRS /overrides/share:/usr/local/share:/usr/share
+  --setenv PATH /usr/bin:/bin:/proton
+
+  # user
+  --setenv USER ${USER}
+  --setenv HOME /home/${USER}
+  --bind home /home/${USER}
+
+  # library overrides
+  --ro-bind overrides/etc/ld.so.conf /etc/ld.so.conf
+  --ro-bind sniper-runtime/files/etc/ld.so.conf.d /etc/ld.so.conf.d
+  --ro-bind /usr/lib/ld-linux-x86-64.so.2 /usr/lib/x86_64-linux-gnu/ld-2.31.so
+  --ro-bind /usr/lib32/ld-linux.so.2 /usr/lib/i386-linux-gnu/ld-2.31.so
+  --ro-bind /usr/bin/ldd /usr/bin/ldd
+
+  --setenv LD_LIBRARY_PATH /overrides/lib/x86_64-linux-gnu:/overrides/lib/i386-linux-gnu
+  
+  # 64 bit
+  --symlink /run/host/usr/lib/libanl.so.1 /overrides/lib/x86_64-linux-gnu/libanl.so.1
+  --symlink /run/host/usr/lib/libBrokenLocale.so.1 /overrides/lib/x86_64-linux-gnu/libBrokenLocale.so.1
+  --symlink /run/host/usr/lib/libcap.so.2.76 /overrides/lib/x86_64-linux-gnu/libcap.so.2
+  --symlink /run/host/usr/lib/libc.so.6 /overrides/lib/x86_64-linux-gnu/libc.so.6
+  --symlink /run/host/usr/lib/libdl.so.2 /overrides/lib/x86_64-linux-gnu/libdl.so.2
+  --symlink /run/host/usr/lib/libdrm_amdgpu.so.1.124.0 /overrides/lib/x86_64-linux-gnu/libdrm_amdgpu.so.1
+  --symlink /run/host/usr/lib/libdrm_intel.so.1.124.0 /overrides/lib/x86_64-linux-gnu/libdrm_intel.so.1
+  --symlink /run/host/usr/lib/libdrm_nouveau.so.2.124.0 /overrides/lib/x86_64-linux-gnu/libdrm_nouveau.so.2
+  --symlink /run/host/usr/lib/libdrm_radeon.so.1.124.0 /overrides/lib/x86_64-linux-gnu/libdrm_radeon.so.1
+  --symlink /run/host/usr/lib/libdrm.so.2.124.0 /overrides/lib/x86_64-linux-gnu/libdrm.so.2
+  --symlink /run/host/usr/lib/libedit.so.0.0.75 /overrides/lib/x86_64-linux-gnu/libedit.so.0
+  --symlink /run/host/usr/lib/libEGL_mesa.so.0.0.0 /overrides/lib/x86_64-linux-gnu/libEGL_mesa.so.0
+  --symlink /run/host/usr/lib/libEGL.so.1.1.0 /overrides/lib/x86_64-linux-gnu/libEGL.so.1
+  --symlink /run/host/usr/lib/libelf-0.193.so /overrides/lib/x86_64-linux-gnu/libelf.so.1
+  --symlink /run/host/usr/lib/libexpat.so.1.10.2 /overrides/lib/x86_64-linux-gnu/libexpat.so.1
+  --symlink /run/host/usr/lib/libffi.so.8.1.4 /overrides/lib/x86_64-linux-gnu/libffi.so.8
+  --symlink /run/host/usr/lib/libgallium-25.0.5-arch1.1.so /overrides/lib/x86_64-linux-gnu/libgallium-25.0.5-arch1.1.so
+  --symlink /run/host/usr/lib/libgbm.so.1.0.0 /overrides/lib/x86_64-linux-gnu/libgbm.so.1
+  --symlink /run/host/usr/lib/libgcc_s.so.1 /overrides/lib/x86_64-linux-gnu/libgcc_s.so.1
+  --symlink /run/host/usr/lib/libGLdispatch.so.0.0.0 /overrides/lib/x86_64-linux-gnu/libGLdispatch.so.0
+  --symlink /run/host/usr/lib/libGLESv2.so.2.1.0 /overrides/lib/x86_64-linux-gnu/libGLESv2.so.2
+  --symlink /run/host/usr/lib/libGL.so.1.7.0 /overrides/lib/x86_64-linux-gnu/libGL.so.1
+  --symlink /run/host/usr/lib/libGLX_mesa.so.0.0.0 /overrides/lib/x86_64-linux-gnu/libGLX_indirect.so.0
+  --symlink /run/host/usr/lib/libGLX_mesa.so.0.0.0 /overrides/lib/x86_64-linux-gnu/libGLX_mesa.so.0
+  --symlink /run/host/usr/lib/libGLX.so.0.0.0 /overrides/lib/x86_64-linux-gnu/libGLX.so.0
+  --symlink /run/host/usr/lib/libicudata.so.76.1 /overrides/lib/x86_64-linux-gnu/libicudata.so.76
+  --symlink /run/host/usr/lib/libicuuc.so.76.1 /overrides/lib/x86_64-linux-gnu/libicuuc.so.76
+  --symlink /run/host/usr/lib/libidn2.so.0.4.0 /overrides/lib/x86_64-linux-gnu/libidn2.so.0
+  --symlink /run/host/usr/lib/libLLVM.so.19.1 /overrides/lib/x86_64-linux-gnu/libLLVM.so.19.1
+  --symlink /run/host/usr/lib/liblzma.so.5.8.1 /overrides/lib/x86_64-linux-gnu/liblzma.so.5
+  --symlink /run/host/usr/lib/libmemusage.so /overrides/lib/x86_64-linux-gnu/libmemusage.so
+  --symlink /run/host/usr/lib/libm.so.6 /overrides/lib/x86_64-linux-gnu/libm.so.6
+  --symlink /run/host/usr/lib/libmvec.so.1 /overrides/lib/x86_64-linux-gnu/libmvec.so.1
+  --symlink /run/host/usr/lib/libncursesw.so.6.5 /overrides/lib/x86_64-linux-gnu/libncursesw.so.6
+  --symlink /run/host/usr/lib/libnsl.so.1 /overrides/lib/x86_64-linux-gnu/libnsl.so.1
+  --symlink /run/host/usr/lib/libnss_compat.so.2 /overrides/lib/x86_64-linux-gnu/libnss_compat.so.2
+  --symlink /run/host/usr/lib/libnss_db.so.2 /overrides/lib/x86_64-linux-gnu/libnss_db.so.2
+  --symlink /run/host/usr/lib/libnss_dns.so.2 /overrides/lib/x86_64-linux-gnu/libnss_dns.so.2
+  --symlink /run/host/usr/lib/libnss_files.so.2 /overrides/lib/x86_64-linux-gnu/libnss_files.so.2
+  --symlink /run/host/usr/lib/libOpenCL.so.1.0.0 /overrides/lib/x86_64-linux-gnu/libOpenCL.so.1
+  --symlink /run/host/usr/lib/libOpenGL.so.0.0.0 /overrides/lib/x86_64-linux-gnu/libOpenGL.so.0
+  --symlink /run/host/usr/lib/libpciaccess.so.0.11.1 /overrides/lib/x86_64-linux-gnu/libpciaccess.so.0
+  --symlink /run/host/usr/lib/libpcprofile.so /overrides/lib/x86_64-linux-gnu/libpcprofile.so
+  --symlink /run/host/usr/lib/libpthread.so.0 /overrides/lib/x86_64-linux-gnu/libpthread.so.0
+  --symlink /run/host/usr/lib/libresolv.so.2 /overrides/lib/x86_64-linux-gnu/libresolv.so.2
+  --symlink /run/host/usr/lib/librt.so.1 /overrides/lib/x86_64-linux-gnu/librt.so.1
+  --symlink /run/host/usr/lib/libsensors.so.5.0.0 /overrides/lib/x86_64-linux-gnu/libsensors.so.5
+  --symlink /run/host/usr/lib/libSPIRV-Tools.so /overrides/lib/x86_64-linux-gnu/libSPIRV-Tools.so
+  --symlink /run/host/usr/lib/libstdc++.so.6.0.34 /overrides/lib/x86_64-linux-gnu/libstdc++.so.6
+  --symlink /run/host/usr/lib/libthread_db.so.1 /overrides/lib/x86_64-linux-gnu/libthread_db.so.1
+  --symlink /run/host/usr/lib/libudev.so.1.7.10 /overrides/lib/x86_64-linux-gnu/libudev.so.1
+  --symlink /run/host/usr/lib/libunistring.so.5.2.0 /overrides/lib/x86_64-linux-gnu/libunistring.so.5
+  --symlink /run/host/usr/lib/libutil.so.1 /overrides/lib/x86_64-linux-gnu/libutil.so.1
+  --symlink /run/host/usr/lib/libva-drm.so.2.2200.0 /overrides/lib/x86_64-linux-gnu/libva-drm.so.2
+  --symlink /run/host/usr/lib/libva-glx.so.2.2200.0 /overrides/lib/x86_64-linux-gnu/libva-glx.so.2
+  --symlink /run/host/usr/lib/libva.so.2.2200.0 /overrides/lib/x86_64-linux-gnu/libva.so.2
+  --symlink /run/host/usr/lib/libva-x11.so.2.2200.0 /overrides/lib/x86_64-linux-gnu/libva-x11.so.2
+  --symlink /run/host/usr/lib/libvdpau.so.1.0.0 /overrides/lib/x86_64-linux-gnu/libvdpau.so.1
+  --symlink /run/host/usr/lib/libvulkan.so.1.4.313 /overrides/lib/x86_64-linux-gnu/libvulkan.so.1
+  --symlink /run/host/usr/lib/libwayland-client.so.0.23.1 /overrides/lib/x86_64-linux-gnu/libwayland-client.so.0
+  --symlink /run/host/usr/lib/libwayland-server.so.0.23.1 /overrides/lib/x86_64-linux-gnu/libwayland-server.so.0
+  --symlink /run/host/usr/lib/libX11.so.6.4.0 /overrides/lib/x86_64-linux-gnu/libX11.so.6
+  --symlink /run/host/usr/lib/libX11-xcb.so.1.0.0 /overrides/lib/x86_64-linux-gnu/libX11-xcb.so.1
+  --symlink /run/host/usr/lib/libXau.so.6.0.0 /overrides/lib/x86_64-linux-gnu/libXau.so.6
+  --symlink /run/host/usr/lib/libxcb-dri3.so.0.1.0 /overrides/lib/x86_64-linux-gnu/libxcb-dri3.so.0
+  --symlink /run/host/usr/lib/libxcb-glx.so.0.0.0 /overrides/lib/x86_64-linux-gnu/libxcb-glx.so.0
+  --symlink /run/host/usr/lib/libxcb-keysyms.so.1.0.0 /overrides/lib/x86_64-linux-gnu/libxcb-keysyms.so.1
+  --symlink /run/host/usr/lib/libxcb-present.so.0.0.0 /overrides/lib/x86_64-linux-gnu/libxcb-present.so.0
+  --symlink /run/host/usr/lib/libxcb-randr.so.0.1.0 /overrides/lib/x86_64-linux-gnu/libxcb-randr.so.0
+  --symlink /run/host/usr/lib/libxcb-shm.so.0.0.0 /overrides/lib/x86_64-linux-gnu/libxcb-shm.so.0
+  --symlink /run/host/usr/lib/libxcb.so.1.1.0 /overrides/lib/x86_64-linux-gnu/libxcb.so.1
+  --symlink /run/host/usr/lib/libxcb-sync.so.1.0.0 /overrides/lib/x86_64-linux-gnu/libxcb-sync.so.1
+  --symlink /run/host/usr/lib/libxcb-xfixes.so.0.0.0 /overrides/lib/x86_64-linux-gnu/libxcb-xfixes.so.0
+  --symlink /run/host/usr/lib/libxcb-xkb.so.1.0.0 /overrides/lib/x86_64-linux-gnu/libxcb-xkb.so.1
+  --symlink /run/host/usr/lib/libXdmcp.so.6.0.0 /overrides/lib/x86_64-linux-gnu/libXdmcp.so.6
+  --symlink /run/host/usr/lib/libXext.so.6.4.0 /overrides/lib/x86_64-linux-gnu/libXext.so.6
+  --symlink /run/host/usr/lib/libXfixes.so.3.1.0 /overrides/lib/x86_64-linux-gnu/libXfixes.so.3
+  --symlink /run/host/usr/lib/libxkbcommon.so.0.9.2 /overrides/lib/x86_64-linux-gnu/libxkbcommon.so.0
+  --symlink /run/host/usr/lib/libxkbcommon-x11.so.0.9.2 /overrides/lib/x86_64-linux-gnu/libxkbcommon-x11.so.0
+  --symlink /run/host/usr/lib/libxml2.so.16.0.3 /overrides/lib/x86_64-linux-gnu/libxml2.so.16
+  --symlink /run/host/usr/lib/libXNVCtrl.so.0.0.0 /overrides/lib/x86_64-linux-gnu/libXNVCtrl.so.0
+  --symlink /run/host/usr/lib/libxshmfence.so.1.0.0 /overrides/lib/x86_64-linux-gnu/libxshmfence.so.1
+  --symlink /run/host/usr/lib/libXxf86vm.so.1.0.0 /overrides/lib/x86_64-linux-gnu/libXxf86vm.so.1
+  --symlink /run/host/usr/lib/libz.so.1.3.1 /overrides/lib/x86_64-linux-gnu/libz.so.1
+  --symlink /run/host/usr/lib/libzstd.so.1.5.7 /overrides/lib/x86_64-linux-gnu/libzstd.so.1
+
+  # 32 bit
+  --symlink /run/host/usr/lib32/libanl.so.1 /overrides/lib/i386-linux-gnu/libanl.so.1
+  --symlink /run/host/usr/lib32/libBrokenLocale.so.1 /overrides/lib/i386-linux-gnu/libBrokenLocale.so.1
+  --symlink /run/host/usr/lib32/libcap.so.2.76 /overrides/lib/i386-linux-gnu/libcap.so.2
+  --symlink /run/host/usr/lib32/libc.so.6 /overrides/lib/i386-linux-gnu/libc.so.6
+  --symlink /run/host/usr/lib32/libdl.so.2 /overrides/lib/i386-linux-gnu/libdl.so.2
+  --symlink /run/host/usr/lib32/libdrm_amdgpu.so.1.124.0 /overrides/lib/i386-linux-gnu/libdrm_amdgpu.so.1
+  --symlink /run/host/usr/lib32/libdrm_intel.so.1.124.0 /overrides/lib/i386-linux-gnu/libdrm_intel.so.1
+  --symlink /run/host/usr/lib32/libdrm_nouveau.so.2.124.0 /overrides/lib/i386-linux-gnu/libdrm_nouveau.so.2
+  --symlink /run/host/usr/lib32/libdrm_radeon.so.1.124.0 /overrides/lib/i386-linux-gnu/libdrm_radeon.so.1
+  --symlink /run/host/usr/lib32/libdrm.so.2.124.0 /overrides/lib/i386-linux-gnu/libdrm.so.2
+  --symlink /run/host/usr/lib32/libEGL_mesa.so.0.0.0 /overrides/lib/i386-linux-gnu/libEGL_mesa.so.0
+  --symlink /run/host/usr/lib32/libEGL.so.1.1.0 /overrides/lib/i386-linux-gnu/libEGL.so.1
+  --symlink /run/host/usr/lib32/libelf-0.193.so /overrides/lib/i386-linux-gnu/libelf.so.1
+  --symlink /run/host/usr/lib32/libexpat.so.1.10.2 /overrides/lib/i386-linux-gnu/libexpat.so.1
+  --symlink /run/host/usr/lib32/libffi.so.8.1.4 /overrides/lib/i386-linux-gnu/libffi.so.8
+  --symlink /run/host/usr/lib32/libgallium-25.0.5-arch1.1.so /overrides/lib/i386-linux-gnu/libgallium-25.0.5-arch1.1.so
+  --symlink /run/host/usr/lib32/libgbm.so.1.0.0 /overrides/lib/i386-linux-gnu/libgbm.so.1
+  --symlink /run/host/usr/lib32/libgcc_s.so.1 /overrides/lib/i386-linux-gnu/libgcc_s.so.1
+  --symlink /run/host/usr/lib32/libGLdispatch.so.0.0.0 /overrides/lib/i386-linux-gnu/libGLdispatch.so.0
+  --symlink /run/host/usr/lib32/libGLESv2.so.2.1.0 /overrides/lib/i386-linux-gnu/libGLESv2.so.2
+  --symlink /run/host/usr/lib32/libGL.so.1.7.0 /overrides/lib/i386-linux-gnu/libGL.so.1
+  --symlink /run/host/usr/lib32/libGLX_mesa.so.0.0.0 /overrides/lib/i386-linux-gnu/libGLX_mesa.so.0
+  --symlink /run/host/usr/lib32/libGLX.so.0.0.0 /overrides/lib/i386-linux-gnu/libGLX.so.0
+  --symlink /run/host/usr/lib32/libicudata.so.76.1 /overrides/lib/i386-linux-gnu/libicudata.so.76
+  --symlink /run/host/usr/lib32/libicuuc.so.76.1 /overrides/lib/i386-linux-gnu/libicuuc.so.76
+  --symlink /run/host/usr/lib32/libidn2.so.0.4.0 /overrides/lib/i386-linux-gnu/libidn2.so.0
+  --symlink /run/host/usr/lib32/libLLVM.so.19.1 /overrides/lib/i386-linux-gnu/libLLVM.so.19.1
+  --symlink /run/host/usr/lib32/liblzma.so.5.8.1 /overrides/lib/i386-linux-gnu/liblzma.so.5
+  --symlink /run/host/usr/lib32/libmemusage.so /overrides/lib/i386-linux-gnu/libmemusage.so
+  --symlink /run/host/usr/lib32/libm.so.6 /overrides/lib/i386-linux-gnu/libm.so.6
+  --symlink /run/host/usr/lib32/libnsl.so.1 /overrides/lib/i386-linux-gnu/libnsl.so.1
+  --symlink /run/host/usr/lib32/libnss_compat.so.2 /overrides/lib/i386-linux-gnu/libnss_compat.so.2
+  --symlink /run/host/usr/lib32/libnss_db.so.2 /overrides/lib/i386-linux-gnu/libnss_db.so.2
+  --symlink /run/host/usr/lib32/libnss_dns.so.2 /overrides/lib/i386-linux-gnu/libnss_dns.so.2
+  --symlink /run/host/usr/lib32/libnss_files.so.2 /overrides/lib/i386-linux-gnu/libnss_files.so.2
+  --symlink /run/host/usr/lib32/libOpenGL.so.0.0.0 /overrides/lib/i386-linux-gnu/libOpenGL.so.0
+  --symlink /run/host/usr/lib32/libpciaccess.so.0.11.1 /overrides/lib/i386-linux-gnu/libpciaccess.so.0
+  --symlink /run/host/usr/lib32/libpcprofile.so /overrides/lib/i386-linux-gnu/libpcprofile.so
+  --symlink /run/host/usr/lib32/libpthread.so.0 /overrides/lib/i386-linux-gnu/libpthread.so.0
+  --symlink /run/host/usr/lib32/libresolv.so.2 /overrides/lib/i386-linux-gnu/libresolv.so.2
+  --symlink /run/host/usr/lib32/librt.so.1 /overrides/lib/i386-linux-gnu/librt.so.1
+  --symlink /run/host/usr/lib32/libsensors.so.5.0.0 /overrides/lib/i386-linux-gnu/libsensors.so.5
+  --symlink /run/host/usr/lib32/libSPIRV-Tools.so /overrides/lib/i386-linux-gnu/libSPIRV-Tools.so
+  --symlink /run/host/usr/lib32/libstdc++.so.6.0.34 /overrides/lib/i386-linux-gnu/libstdc++.so.6
+  --symlink /run/host/usr/lib32/libthread_db.so.1 /overrides/lib/i386-linux-gnu/libthread_db.so.1
+  --symlink /run/host/usr/lib32/libudev.so.1.7.10 /overrides/lib/i386-linux-gnu/libudev.so.1
+  --symlink /run/host/usr/lib32/libunistring.so.5.2.0 /overrides/lib/i386-linux-gnu/libunistring.so.5
+  --symlink /run/host/usr/lib32/libutil.so.1 /overrides/lib/i386-linux-gnu/libutil.so.1
+  --symlink /run/host/usr/lib32/libva-drm.so.2.2200.0 /overrides/lib/i386-linux-gnu/libva-drm.so.2
+  --symlink /run/host/usr/lib32/libva-glx.so.2.2200.0 /overrides/lib/i386-linux-gnu/libva-glx.so.2
+  --symlink /run/host/usr/lib32/libva.so.2.2200.0 /overrides/lib/i386-linux-gnu/libva.so.2
+  --symlink /run/host/usr/lib32/libva-x11.so.2.2200.0 /overrides/lib/i386-linux-gnu/libva-x11.so.2
+  --symlink /run/host/usr/lib32/libvulkan.so.1.4.313 /overrides/lib/i386-linux-gnu/libvulkan.so.1
+  --symlink /run/host/usr/lib32/libwayland-client.so.0.23.1 /overrides/lib/i386-linux-gnu/libwayland-client.so.0
+  --symlink /run/host/usr/lib32/libwayland-server.so.0.23.1 /overrides/lib/i386-linux-gnu/libwayland-server.so.0
+  --symlink /run/host/usr/lib32/libX11.so.6.4.0 /overrides/lib/i386-linux-gnu/libX11.so.6
+  --symlink /run/host/usr/lib32/libX11-xcb.so.1.0.0 /overrides/lib/i386-linux-gnu/libX11-xcb.so.1
+  --symlink /run/host/usr/lib32/libXau.so.6.0.0 /overrides/lib/i386-linux-gnu/libXau.so.6
+  --symlink /run/host/usr/lib32/libxcb-dri3.so.0.1.0 /overrides/lib/i386-linux-gnu/libxcb-dri3.so.0
+  --symlink /run/host/usr/lib32/libxcb-glx.so.0.0.0 /overrides/lib/i386-linux-gnu/libxcb-glx.so.0
+  --symlink /run/host/usr/lib32/libxcb-keysyms.so.1.0.0 /overrides/lib/i386-linux-gnu/libxcb-keysyms.so.1
+  --symlink /run/host/usr/lib32/libxcb-present.so.0.0.0 /overrides/lib/i386-linux-gnu/libxcb-present.so.0
+  --symlink /run/host/usr/lib32/libxcb-randr.so.0.1.0 /overrides/lib/i386-linux-gnu/libxcb-randr.so.0
+  --symlink /run/host/usr/lib32/libxcb-shm.so.0.0.0 /overrides/lib/i386-linux-gnu/libxcb-shm.so.0
+  --symlink /run/host/usr/lib32/libxcb.so.1.1.0 /overrides/lib/i386-linux-gnu/libxcb.so.1
+  --symlink /run/host/usr/lib32/libxcb-sync.so.1.0.0 /overrides/lib/i386-linux-gnu/libxcb-sync.so.1
+  --symlink /run/host/usr/lib32/libxcb-xfixes.so.0.0.0 /overrides/lib/i386-linux-gnu/libxcb-xfixes.so.0
+  --symlink /run/host/usr/lib32/libXdmcp.so.6.0.0 /overrides/lib/i386-linux-gnu/libXdmcp.so.6
+  --symlink /run/host/usr/lib32/libXext.so.6.4.0 /overrides/lib/i386-linux-gnu/libXext.so.6
+  --symlink /run/host/usr/lib32/libXfixes.so.3.1.0 /overrides/lib/i386-linux-gnu/libXfixes.so.3
+  --symlink /run/host/usr/lib32/libxkbcommon.so.0.9.2 /overrides/lib/i386-linux-gnu/libxkbcommon.so.0
+  --symlink /run/host/usr/lib32/libxml2.so.16.0.3 /overrides/lib/i386-linux-gnu/libxml2.so.16
+  --symlink /run/host/usr/lib32/libxshmfence.so.1.0.0 /overrides/lib/i386-linux-gnu/libxshmfence.so.1
+  --symlink /run/host/usr/lib32/libXxf86vm.so.1.0.0 /overrides/lib/i386-linux-gnu/libXxf86vm.so.1
+  --symlink /run/host/usr/lib32/libz.so.1.3.1 /overrides/lib/i386-linux-gnu/libz.so.1
+  --symlink /run/host/usr/lib32/libzstd.so.1.5.7 /overrides/lib/i386-linux-gnu/libzstd.so.1
+
+  # Vulkan
+  --ro-bind overrides/share/vulkan/icd.d/radeon_icd.x86_64.json /overrides/share/vulkan/icd.d/radeon_icd.x86_64.json
+  --ro-bind overrides/share/vulkan/icd.d/radeon_icd.i686.json /overrides/share/vulkan/icd.d/radeon_icd.i686.json
+  --symlink /run/host/usr/lib/libvulkan_radeon.so /overrides/lib/x86_64-linux-gnu/libvulkan_radeon.so
+  --symlink /run/host/usr/lib32/libvulkan_radeon.so /overrides/lib/i386-linux-gnu/libvulkan_radeon.so
+  --setenv VK_DRIVER_FILES /overrides/share/vulkan/icd.d/radeon_icd.i686.json:/overrides/share/vulkan/icd.d/radeon_icd.x86_64.json
+  --setenv VK_ICD_FILENAMES /overrides/share/vulkan/icd.d/radeon_icd.i686.json:/overrides/share/vulkan/icd.d/radeon_icd.x86_64.json
+
+  # Mangohud
+  --ro-bind overrides/share/vulkan/implicit_layer.d/MangoHud.x86_64.json /overrides/share/vulkan/implicit_layer.d/MangoHud.x86_64.json
+  --ro-bind overrides/share/vulkan/implicit_layer.d/MangoHud.x86.json /overrides/share/vulkan/implicit_layer.d/MangoHud.x86.json
+  --symlink /run/host/usr/lib/mangohud/libMangoHud.so /overrides/lib/x86_64-linux-gnu/mangohud/libMangoHud.so
+  --symlink /run/host/usr/lib32/mangohud/libMangoHud.so /overrides/lib/i386-linux-gnu/mangohud/libMangoHud.so
+  --setenv MANGOHUD 1
+  --setenv MANGOHUD_CONFIG full
+
+  # Proton
+  --ro-bind GE-Proton10-4 /proton
+  --setenv STEAM_COMPAT_CLIENT_INSTALL_PATH ""
+  --setenv STEAM_COMPAT_DATA_PATH /home/${USER}/steamcompat
+  --setenv SteamGameId 0
+  --setenv UMU_ID 0
+
+  # Fix for hotplug controllers inside bubblewrap
+  # (udev detection doesn't seem to work with --unshare-net)
+  --setenv SDL_JOYSTICK_DISABLE_UDEV 1
+)
+
+if [ -n "$GAME" ]; then
+  args+=(
+    --bind "$GAME" "/home/${USER}/game"
+  )
+fi
+
+passwd=$(cat <<EOF
+${USER}:x:$(id -u):$(id -g)::/home/${USER}:/bin/bash
+nobody:x:65534:65534:Nobody:/:/usr/bin/nologin
+EOF
+)
+
+group=$(cat <<EOF
+${USER}:x:$(id -g):
+nobody:x:65534:
+EOF
+)
+
+exec bwrap "${args[@]}" sh -c "ldconfig && bash" \
+  11<<< "$passwd" \
+  12<<< "$group" \
+  13<<< "ffffffffffffffffffffffffffffffff"
