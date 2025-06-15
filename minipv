@@ -61,6 +61,7 @@ args=(
   --bind-try cache /home/${USER}/.cache
   --bind-try config /home/${USER}/.config
   --bind-try local /home/${USER}/.local
+  --bind-try users /home/${USER}/steamcompat/pfx/drive_c/users
 
   # library overrides
   --ro-bind "${OVERRIDES}/etc/ld.so.conf" /etc/ld.so.conf
