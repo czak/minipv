@@ -1,16 +1,17 @@
 #!/bin/sh
 export TERM=xterm-256color
 
-# Path to extracted sniper runtime image
-# e.g. https://repo.steampowered.com/steamrt-images-sniper/snapshots/latest-container-runtime-public-beta/com.valvesoftware.SteamRuntime.Platform-amd64%2Ci386-sniper-runtime.tar.gz
-RUNTIMEPATH=$HOME/.local/share/minipv/sniper-runtime
-
-# Path to extracted Proton
-# e.g. https://github.com/GloriousEggroll/proton-ge-custom/releases/download/GE-Proton10-4/GE-Proton10-4.tar.zst
-PROTONPATH=$HOME/.local/share/minipv/GE-Proton10-4
+# This should contain:
+# - sniper-runtime/ - extracted sniper runtime images
+# - proton/ - proton to be mounted in container
+# - home/ - persistent home
+DATA=$HOME/.local/share/minipv
 
 # Overrides
-OVERRIDESPATH="$(dirname $(readlink -f "$0"))/overrides"
+OVERRIDES="$(dirname $(readlink -f "$0"))/overrides"
+
+# Compat data folder must exist or proton exits
+mkdir -p $DATA/home/steamcompat
 
 args=(
   --clearenv
@@ -18,7 +19,7 @@ args=(
 
   --size 90000000000 --tmpfs /
 
-  --ro-bind "${RUNTIMEPATH}/files" /usr
+  --ro-bind "$DATA/sniper-runtime/files" /usr
 
   --dev-bind /dev /dev
   --bind /opt /opt
@@ -56,14 +57,14 @@ args=(
   # user
   --setenv USER ${USER}
   --setenv HOME /home/${USER}
-  --tmpfs /home/${USER}
+  --bind $DATA/home /home/${USER}
   --bind-try cache /home/${USER}/.cache
   --bind-try config /home/${USER}/.config
   --bind-try local /home/${USER}/.local
 
   # library overrides
-  --ro-bind "${OVERRIDESPATH}/etc/ld.so.conf" /etc/ld.so.conf
-  --ro-bind "${RUNTIMEPATH}/files/etc/ld.so.conf.d" /etc/ld.so.conf.d
+  --ro-bind "${OVERRIDES}/etc/ld.so.conf" /etc/ld.so.conf
+  --ro-bind "${DATA}/sniper-runtime/files/etc/ld.so.conf.d" /etc/ld.so.conf.d
   --ro-bind /usr/lib/ld-linux-x86-64.so.2 /usr/lib/x86_64-linux-gnu/ld-2.31.so
   --ro-bind /usr/lib32/ld-linux.so.2 /usr/lib/i386-linux-gnu/ld-2.31.so
   --ro-bind /usr/bin/ldd /usr/bin/ldd
@@ -236,23 +237,20 @@ args=(
   --symlink /run/host/usr/lib32/libzstd.so.1.5.7 /overrides/lib/i386-linux-gnu/libzstd.so.1
 
   # Vulkan
-  --ro-bind "${OVERRIDESPATH}/share/vulkan/icd.d/radeon_icd.x86_64.json" /overrides/share/vulkan/icd.d/radeon_icd.x86_64.json
-  --ro-bind "${OVERRIDESPATH}/share/vulkan/icd.d/radeon_icd.i686.json" /overrides/share/vulkan/icd.d/radeon_icd.i686.json
-  --symlink /run/host/usr/lib/libvulkan_radeon.so /overrides/lib/x86_64-linux-gnu/libvulkan_radeon.so
-  --symlink /run/host/usr/lib32/libvulkan_radeon.so /overrides/lib/i386-linux-gnu/libvulkan_radeon.so
-  --setenv VK_DRIVER_FILES /overrides/share/vulkan/icd.d/radeon_icd.i686.json:/overrides/share/vulkan/icd.d/radeon_icd.x86_64.json
-  --setenv VK_ICD_FILENAMES /overrides/share/vulkan/icd.d/radeon_icd.i686.json:/overrides/share/vulkan/icd.d/radeon_icd.x86_64.json
+  --ro-bind "${OVERRIDES}/share/vulkan/icd.d/radeon_icd.x86_64.json" /overrides/share/vulkan/icd.d/radeon_icd.x86_64.json
+  --ro-bind "${OVERRIDES}/share/vulkan/icd.d/radeon_icd.i686.json" /overrides/share/vulkan/icd.d/radeon_icd.i686.json
+  # --setenv VK_DRIVER_FILES /overrides/share/vulkan/icd.d/radeon_icd.i686.json:/overrides/share/vulkan/icd.d/radeon_icd.x86_64.json
+  # --setenv VK_ICD_FILENAMES /overrides/share/vulkan/icd.d/radeon_icd.i686.json:/overrides/share/vulkan/icd.d/radeon_icd.x86_64.json
 
   # Mangohud
-  --ro-bind "${OVERRIDESPATH}/share/vulkan/implicit_layer.d/MangoHud.x86_64.json" /overrides/share/vulkan/implicit_layer.d/MangoHud.x86_64.json
-  --ro-bind "${OVERRIDESPATH}/share/vulkan/implicit_layer.d/MangoHud.x86.json" /overrides/share/vulkan/implicit_layer.d/MangoHud.x86.json
-  --symlink /run/host/usr/lib/mangohud/libMangoHud.so /overrides/lib/x86_64-linux-gnu/mangohud/libMangoHud.so
-  --symlink /run/host/usr/lib32/mangohud/libMangoHud.so /overrides/lib/i386-linux-gnu/mangohud/libMangoHud.so
+  --ro-bind "${OVERRIDES}/share/vulkan/implicit_layer.d/MangoHud.x86_64.json" /overrides/share/vulkan/implicit_layer.d/MangoHud.x86_64.json
+  --ro-bind "${OVERRIDES}/share/vulkan/implicit_layer.d/MangoHud.x86.json" /overrides/share/vulkan/implicit_layer.d/MangoHud.x86.json
   --setenv MANGOHUD 1
   --setenv MANGOHUD_CONFIG full
+  --setenv LD_PRELOAD "/run/host/usr/\$LIB/mangohud/libMangoHud_shim.so"
 
   # Proton
-  --ro-bind "${PROTONPATH}" /proton
+  --ro-bind "${DATA}/proton" /proton
   --setenv STEAM_COMPAT_CLIENT_INSTALL_PATH ""
   --setenv STEAM_COMPAT_DATA_PATH /home/${USER}/steamcompat
   --setenv SteamGameId 0
@@ -261,13 +259,10 @@ args=(
   # Fix for hotplug controllers inside bubblewrap
   # (udev detection doesn't seem to work with --unshare-net)
   --setenv SDL_JOYSTICK_DISABLE_UDEV 1
-)
 
-if [ -n "$GAME" ]; then
-  args+=(
-    --bind "$GAME" "/home/${USER}/game"
-  )
-fi
+  # app
+  --bind-try app /home/${USER}/app
+)
 
 passwd=$(cat <<EOF
 ${USER}:x:$(id -u):$(id -g)::/home/${USER}:/bin/bash
@@ -281,7 +276,7 @@ nobody:x:65534:
 EOF
 )
 
-exec bwrap "${args[@]}" sh -c "ldconfig && bash" \
+exec bwrap "${args[@]}" "$@" sh -c "ldconfig && bash" \
   11<<< "$passwd" \
   12<<< "$group" \
   13<<< "ffffffffffffffffffffffffffffffff"
