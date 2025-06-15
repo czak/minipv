@@ -41,6 +41,7 @@ args=(
 
   # /etc
   --ro-bind /etc/fonts /etc/fonts
+  --symlink /usr/lib/os-release /etc/os-release
 
   # fake configs
   --file 11 /etc/passwd
@@ -277,7 +278,30 @@ nobody:x:65534:
 EOF
 )
 
-exec bwrap "${args[@]}" "$@" sh -c "ldconfig && bash" \
+# Split arguments for bwrap and for exec
+# Call with e.g. `minipv --ro-bind thing /thing -- /thing/run.sh --verbose`
+bwrap_args=()
+exec_cmd=()
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --)
+      shift
+      exec_cmd=("$@")
+      break
+      ;;
+    *)
+      bwrap_args+=("$1")
+      shift
+      ;;
+  esac
+done
+
+if [ ${#exec_cmd[@]} -eq 0 ]; then
+  exec_cmd=("bash")
+fi
+
+exec bwrap "${args[@]}" "${bwrap_args[@]}" -- sh -c 'ldconfig && exec "$@"' 'minipv' "${exec_cmd[@]}" \
   11<<< "$passwd" \
   12<<< "$group" \
   13<<< "ffffffffffffffffffffffffffffffff"
