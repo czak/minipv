@@ -127,7 +127,7 @@ add_symlink x86_64-linux-gnu /usr/lib/libEGL.so.1.1.0 libEGL.so.1
 add_symlink x86_64-linux-gnu /usr/lib/libelf-0.193.so libelf.so.1
 add_symlink x86_64-linux-gnu /usr/lib/libexpat.so.1.10.2 libexpat.so.1
 add_symlink x86_64-linux-gnu /usr/lib/libffi.so.8 libffi.so.8
-add_symlink x86_64-linux-gnu /usr/lib/libgallium-25.1.4-arch1.1.so libgallium-25.1.4-arch1.1.so
+add_symlink x86_64-linux-gnu /usr/lib/libgallium-25.1.5-arch1.1.so libgallium-25.1.5-arch1.1.so
 add_symlink x86_64-linux-gnu /usr/lib/libgamemode.so.0 libgamemode.so.0
 add_symlink x86_64-linux-gnu /usr/lib/libgamemodeauto.so.0 libgamemodeauto.so.0
 add_symlink x86_64-linux-gnu /usr/lib/libgbm.so.1.0.0 libgbm.so.1
@@ -194,7 +194,7 @@ add_symlink x86_64-linux-gnu /usr/lib/libXfixes.so.3.1.0 libXfixes.so.3
 add_symlink x86_64-linux-gnu /usr/lib/libxkbcommon.so.0.10.0 libxkbcommon.so.0
 add_symlink x86_64-linux-gnu /usr/lib/libxkbcommon-x11.so.0.10.0 libxkbcommon-x11.so.0
 add_symlink x86_64-linux-gnu /usr/lib/libxml2.so.16.0.4 libxml2.so.16
-add_symlink x86_64-linux-gnu /usr/lib/libXNVCtrl.so.0.0.0 libXNVCtrl.so.0
+# add_symlink x86_64-linux-gnu /usr/lib/libXNVCtrl.so.0.0.0 libXNVCtrl.so.0
 add_symlink x86_64-linux-gnu /usr/lib/libxshmfence.so.1.0.0 libxshmfence.so.1
 add_symlink x86_64-linux-gnu /usr/lib/libXxf86vm.so.1.0.0 libXxf86vm.so.1
 add_symlink x86_64-linux-gnu /usr/lib/libz.so.1.3.1 libz.so.1
@@ -207,17 +207,17 @@ add_symlink i386-linux-gnu /usr/lib32/libcap.so.2.76 libcap.so.2
 add_symlink i386-linux-gnu /usr/lib32/libc.so.6 libc.so.6
 add_symlink i386-linux-gnu /usr/lib32/libdbus-1.so.3 libdbus-1.so.3
 add_symlink i386-linux-gnu /usr/lib32/libdl.so.2 libdl.so.2
-add_symlink i386-linux-gnu /usr/lib32/libdrm_amdgpu.so.1.124.0 libdrm_amdgpu.so.1
-add_symlink i386-linux-gnu /usr/lib32/libdrm_intel.so.1.124.0 libdrm_intel.so.1
-add_symlink i386-linux-gnu /usr/lib32/libdrm_nouveau.so.2.124.0 libdrm_nouveau.so.2
-add_symlink i386-linux-gnu /usr/lib32/libdrm_radeon.so.1.124.0 libdrm_radeon.so.1
-add_symlink i386-linux-gnu /usr/lib32/libdrm.so.2.124.0 libdrm.so.2
+add_symlink i386-linux-gnu /usr/lib32/libdrm_amdgpu.so.1.125.0 libdrm_amdgpu.so.1
+add_symlink i386-linux-gnu /usr/lib32/libdrm_intel.so.1.125.0 libdrm_intel.so.1
+add_symlink i386-linux-gnu /usr/lib32/libdrm_nouveau.so.2.125.0 libdrm_nouveau.so.2
+add_symlink i386-linux-gnu /usr/lib32/libdrm_radeon.so.1.125.0 libdrm_radeon.so.1
+add_symlink i386-linux-gnu /usr/lib32/libdrm.so.2.125.0 libdrm.so.2
 add_symlink i386-linux-gnu /usr/lib32/libEGL_mesa.so.0.0.0 libEGL_mesa.so.0
 add_symlink i386-linux-gnu /usr/lib32/libEGL.so.1.1.0 libEGL.so.1
 add_symlink i386-linux-gnu /usr/lib32/libelf-0.193.so libelf.so.1
 add_symlink i386-linux-gnu /usr/lib32/libexpat.so.1.10.2 libexpat.so.1
 add_symlink i386-linux-gnu /usr/lib32/libffi.so.8 libffi.so.8
-add_symlink i386-linux-gnu /usr/lib32/libgallium-25.1.4-arch1.1.so libgallium-25.1.3-arch1.1.so
+add_symlink i386-linux-gnu /usr/lib32/libgallium-25.1.5-arch1.1.so libgallium-25.1.5-arch1.1.so
 add_symlink i386-linux-gnu /usr/lib32/libgamemode.so.0 libgamemode.so.0
 add_symlink i386-linux-gnu /usr/lib32/libgamemodeauto.so.0 libgamemodeauto.so.0
 add_symlink i386-linux-gnu /usr/lib32/libgbm.so.1.0.0 libgbm.so.1
