@@ -80,7 +80,7 @@ args=(
   --ro-bind "${OVERRIDES}/share/vulkan/implicit_layer.d/MangoHud.x86_64.json" /overrides/share/vulkan/implicit_layer.d/MangoHud.x86_64.json
   --ro-bind "${OVERRIDES}/share/vulkan/implicit_layer.d/MangoHud.x86.json" /overrides/share/vulkan/implicit_layer.d/MangoHud.x86.json
   --setenv MANGOHUD 1
-  --setenv MANGOHUD_CONFIG full
+  # --setenv MANGOHUD_CONFIG full
   --setenv LD_PRELOAD "/run/host/usr/\$LIB/mangohud/libMangoHud_shim.so:libgamemodeauto.so.0"
 
   # Proton
@@ -127,7 +127,7 @@ add_symlink x86_64-linux-gnu /usr/lib/libEGL.so.1.1.0 libEGL.so.1
 add_symlink x86_64-linux-gnu /usr/lib/libelf-0.193.so libelf.so.1
 add_symlink x86_64-linux-gnu /usr/lib/libexpat.so.1.10.2 libexpat.so.1
 add_symlink x86_64-linux-gnu /usr/lib/libffi.so.8 libffi.so.8
-add_symlink x86_64-linux-gnu /usr/lib/libgallium-25.1.5-arch1.1.so libgallium-25.1.5-arch1.1.so
+add_symlink x86_64-linux-gnu /usr/lib/libgallium-25.1.7-arch1.1.so libgallium-25.1.7-arch1.1.so
 add_symlink x86_64-linux-gnu /usr/lib/libgamemode.so.0 libgamemode.so.0
 add_symlink x86_64-linux-gnu /usr/lib/libgamemodeauto.so.0 libgamemodeauto.so.0
 add_symlink x86_64-linux-gnu /usr/lib/libgbm.so.1.0.0 libgbm.so.1
@@ -172,9 +172,9 @@ add_symlink x86_64-linux-gnu /usr/lib/libva-glx.so.2.2200.0 libva-glx.so.2
 add_symlink x86_64-linux-gnu /usr/lib/libva.so.2.2200.0 libva.so.2
 add_symlink x86_64-linux-gnu /usr/lib/libva-x11.so.2.2200.0 libva-x11.so.2
 add_symlink x86_64-linux-gnu /usr/lib/libvdpau.so.1.0.0 libvdpau.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libvulkan.so.1.4.313 libvulkan.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libwayland-client.so.0.23.1 libwayland-client.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libwayland-server.so.0.23.1 libwayland-server.so.0
+add_symlink x86_64-linux-gnu /usr/lib/libvulkan.so.1.4.321 libvulkan.so.1
+add_symlink x86_64-linux-gnu /usr/lib/libwayland-client.so.0.24.0 libwayland-client.so.0
+add_symlink x86_64-linux-gnu /usr/lib/libwayland-server.so.0.24.0 libwayland-server.so.0
 add_symlink x86_64-linux-gnu /usr/lib/libX11.so.6.4.0 libX11.so.6
 add_symlink x86_64-linux-gnu /usr/lib/libX11-xcb.so.1.0.0 libX11-xcb.so.1
 add_symlink x86_64-linux-gnu /usr/lib/libXau.so.6.0.0 libXau.so.6
@@ -193,7 +193,7 @@ add_symlink x86_64-linux-gnu /usr/lib/libXext.so.6.4.0 libXext.so.6
 add_symlink x86_64-linux-gnu /usr/lib/libXfixes.so.3.1.0 libXfixes.so.3
 add_symlink x86_64-linux-gnu /usr/lib/libxkbcommon.so.0.10.0 libxkbcommon.so.0
 add_symlink x86_64-linux-gnu /usr/lib/libxkbcommon-x11.so.0.10.0 libxkbcommon-x11.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libxml2.so.16.0.4 libxml2.so.16
+add_symlink x86_64-linux-gnu /usr/lib/libxml2.so.16.0.5 libxml2.so.16
 # add_symlink x86_64-linux-gnu /usr/lib/libXNVCtrl.so.0.0.0 libXNVCtrl.so.0
 add_symlink x86_64-linux-gnu /usr/lib/libxshmfence.so.1.0.0 libxshmfence.so.1
 add_symlink x86_64-linux-gnu /usr/lib/libXxf86vm.so.1.0.0 libXxf86vm.so.1
@@ -217,7 +217,7 @@ add_symlink i386-linux-gnu /usr/lib32/libEGL.so.1.1.0 libEGL.so.1
 add_symlink i386-linux-gnu /usr/lib32/libelf-0.193.so libelf.so.1
 add_symlink i386-linux-gnu /usr/lib32/libexpat.so.1.10.2 libexpat.so.1
 add_symlink i386-linux-gnu /usr/lib32/libffi.so.8 libffi.so.8
-add_symlink i386-linux-gnu /usr/lib32/libgallium-25.1.5-arch1.1.so libgallium-25.1.5-arch1.1.so
+add_symlink i386-linux-gnu /usr/lib32/libgallium-25.1.7-arch1.1.so libgallium-25.1.7-arch1.1.so
 add_symlink i386-linux-gnu /usr/lib32/libgamemode.so.0 libgamemode.so.0
 add_symlink i386-linux-gnu /usr/lib32/libgamemodeauto.so.0 libgamemodeauto.so.0
 add_symlink i386-linux-gnu /usr/lib32/libgbm.so.1.0.0 libgbm.so.1
@@ -257,7 +257,7 @@ add_symlink i386-linux-gnu /usr/lib32/libva-drm.so.2.2200.0 libva-drm.so.2
 add_symlink i386-linux-gnu /usr/lib32/libva-glx.so.2.2200.0 libva-glx.so.2
 add_symlink i386-linux-gnu /usr/lib32/libva.so.2.2200.0 libva.so.2
 add_symlink i386-linux-gnu /usr/lib32/libva-x11.so.2.2200.0 libva-x11.so.2
-add_symlink i386-linux-gnu /usr/lib32/libvulkan.so.1.4.313 libvulkan.so.1
+add_symlink i386-linux-gnu /usr/lib32/libvulkan.so.1.4.321 libvulkan.so.1
 add_symlink i386-linux-gnu /usr/lib32/libwayland-client.so.0.23.1 libwayland-client.so.0
 add_symlink i386-linux-gnu /usr/lib32/libwayland-server.so.0.23.1 libwayland-server.so.0
 add_symlink i386-linux-gnu /usr/lib32/libX11.so.6.4.0 libX11.so.6
@@ -276,7 +276,7 @@ add_symlink i386-linux-gnu /usr/lib32/libXdmcp.so.6.0.0 libXdmcp.so.6
 add_symlink i386-linux-gnu /usr/lib32/libXext.so.6.4.0 libXext.so.6
 add_symlink i386-linux-gnu /usr/lib32/libXfixes.so.3.1.0 libXfixes.so.3
 add_symlink i386-linux-gnu /usr/lib32/libxkbcommon.so.0.10.0 libxkbcommon.so.0
-add_symlink i386-linux-gnu /usr/lib32/libxml2.so.16.0.4 libxml2.so.16
+add_symlink i386-linux-gnu /usr/lib32/libxml2.so.16.0.5 libxml2.so.16
 add_symlink i386-linux-gnu /usr/lib32/libxshmfence.so.1.0.0 libxshmfence.so.1
 add_symlink i386-linux-gnu /usr/lib32/libXxf86vm.so.1.0.0 libXxf86vm.so.1
 add_symlink i386-linux-gnu /usr/lib32/libz.so.1.3.1 libz.so.1
