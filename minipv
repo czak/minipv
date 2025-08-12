@@ -49,9 +49,9 @@ args=(
   --file 13 /etc/machine-id
 
   # env
-  --setenv DISPLAY $DISPLAY
-  --setenv WAYLAND_DISPLAY $WAYLAND_DISPLAY
-  --setenv XDG_RUNTIME_DIR $XDG_RUNTIME_DIR
+  --setenv DISPLAY ${DISPLAY:-:0}
+  --setenv WAYLAND_DISPLAY ${WAYLAND_DISPLAY:-""}
+  --setenv XDG_RUNTIME_DIR ${XDG_RUNTIME_DIR:-/run/user/1000}
   --setenv XDG_DATA_DIRS /overrides/share:/usr/local/share:/usr/share
   --setenv PATH /usr/bin:/bin:/proton
 
