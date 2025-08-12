@@ -193,8 +193,8 @@ add_symlink x86_64-linux-gnu /usr/lib/libxcb-xkb.so.1.0.0 libxcb-xkb.so.1
 add_symlink x86_64-linux-gnu /usr/lib/libXdmcp.so.6.0.0 libXdmcp.so.6
 add_symlink x86_64-linux-gnu /usr/lib/libXext.so.6.4.0 libXext.so.6
 add_symlink x86_64-linux-gnu /usr/lib/libXfixes.so.3.1.0 libXfixes.so.3
-add_symlink x86_64-linux-gnu /usr/lib/libxkbcommon.so.0.10.0 libxkbcommon.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libxkbcommon-x11.so.0.10.0 libxkbcommon-x11.so.0
+add_symlink x86_64-linux-gnu /usr/lib/libxkbcommon.so.0.11.0 libxkbcommon.so.0
+add_symlink x86_64-linux-gnu /usr/lib/libxkbcommon-x11.so.0.11.0 libxkbcommon-x11.so.0
 add_symlink x86_64-linux-gnu /usr/lib/libxml2.so.16.0.5 libxml2.so.16
 # add_symlink x86_64-linux-gnu /usr/lib/libXNVCtrl.so.0.0.0 libXNVCtrl.so.0
 add_symlink x86_64-linux-gnu /usr/lib/libxshmfence.so.1.0.0 libxshmfence.so.1
@@ -277,7 +277,7 @@ add_symlink i386-linux-gnu /usr/lib32/libxcb-xfixes.so.0.0.0 libxcb-xfixes.so.0
 add_symlink i386-linux-gnu /usr/lib32/libXdmcp.so.6.0.0 libXdmcp.so.6
 add_symlink i386-linux-gnu /usr/lib32/libXext.so.6.4.0 libXext.so.6
 add_symlink i386-linux-gnu /usr/lib32/libXfixes.so.3.1.0 libXfixes.so.3
-add_symlink i386-linux-gnu /usr/lib32/libxkbcommon.so.0.10.0 libxkbcommon.so.0
+add_symlink i386-linux-gnu /usr/lib32/libxkbcommon.so.0.11.0 libxkbcommon.so.0
 add_symlink i386-linux-gnu /usr/lib32/libxml2.so.16.0.5 libxml2.so.16
 add_symlink i386-linux-gnu /usr/lib32/libxshmfence.so.1.0.0 libxshmfence.so.1
 add_symlink i386-linux-gnu /usr/lib32/libXxf86vm.so.1.0.0 libXxf86vm.so.1
