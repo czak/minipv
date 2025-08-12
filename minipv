@@ -75,6 +75,8 @@ args=(
   # Vulkan
   --ro-bind "${OVERRIDES}/share/vulkan/icd.d/radeon_icd.x86_64.json" /overrides/share/vulkan/icd.d/radeon_icd.x86_64.json
   --ro-bind "${OVERRIDES}/share/vulkan/icd.d/radeon_icd.i686.json" /overrides/share/vulkan/icd.d/radeon_icd.i686.json
+  --ro-bind "${OVERRIDES}/share/vulkan/icd.d/intel_icd.x86_64.json" /overrides/share/vulkan/icd.d/intel_icd.x86_64.json
+  --ro-bind "${OVERRIDES}/share/vulkan/icd.d/intel_icd.i686.json" /overrides/share/vulkan/icd.d/intel_icd.i686.json
 
   # Mangohud
   --ro-bind "${OVERRIDES}/share/vulkan/implicit_layer.d/MangoHud.x86_64.json" /overrides/share/vulkan/implicit_layer.d/MangoHud.x86_64.json
