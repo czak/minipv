@@ -83,7 +83,7 @@ args=(
   --ro-bind "${OVERRIDES}/share/vulkan/implicit_layer.d/MangoHud.x86.json" /overrides/share/vulkan/implicit_layer.d/MangoHud.x86.json
   --setenv MANGOHUD 1
   # --setenv MANGOHUD_CONFIG full
-  --setenv LD_PRELOAD "/run/host/usr/\$LIB/mangohud/libMangoHud_shim.so:libgamemodeauto.so.0"
+  --setenv LD_PRELOAD "${LD_PRELOAD}:/run/host/usr/\$LIB/mangohud/libMangoHud_shim.so:libgamemodeauto.so.0"
 
   # Proton
   --ro-bind "${DATA}/proton" /proton
