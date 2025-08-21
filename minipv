@@ -100,6 +100,14 @@ args=(
   --bind-try app /home/${USER}/app
 )
 
+# Ignore physical controllers if Steam Input device is present
+if grep -q "Vendor=28de Product=11ff" /proc/bus/input/devices; then
+  echo "Steam Input detected - hiding physical controllers"
+  args+=(--setenv SDL_GAMECONTROLLER_IGNORE_DEVICES_EXCEPT "28de:11ff")
+else
+  echo "No Steam Input - allowing physical controllers"
+fi
+
 add_symlink() {
   arch="$1"
   src="$2"
