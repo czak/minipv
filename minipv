@@ -109,188 +109,112 @@ else
 fi
 
 add_symlink() {
-  arch="$1"
-  src="$2"
-  dst="$3"
-  if [ -e "$src" ]; then
-    args+=(--symlink "/run/host/$src" "/overrides/lib/$arch/$dst")
+  soname="$1"
+
+  if [ -e "/usr/lib/$soname" ]; then
+    args+=(--symlink "/run/host/usr/lib/$soname" "/overrides/lib/x86_64-linux-gnu/$soname")
   else
-    echo "Warning: source file $src does not exist, skipping symlink to $dst" >&2
+    echo "Warning: 64-bit $soname not found" >&2
+  fi
+
+  if [ -e "/usr/lib32/$soname" ]; then
+    args+=(--symlink "/run/host/usr/lib32/$soname" "/overrides/lib/i386-linux-gnu/$soname")
+  else
+    echo "Warning: 32-bit $soname not found" >&2
   fi
 }
 
-# 64 bit
-add_symlink x86_64-linux-gnu /usr/lib/libanl.so.1 libanl.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libBrokenLocale.so.1 libBrokenLocale.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libcap.so.2.76 libcap.so.2
-add_symlink x86_64-linux-gnu /usr/lib/libc.so.6 libc.so.6
-add_symlink x86_64-linux-gnu /usr/lib/libdbus-1.so.3 libdbus-1.so.3
-add_symlink x86_64-linux-gnu /usr/lib/libdl.so.2 libdl.so.2
-add_symlink x86_64-linux-gnu /usr/lib/libdrm_amdgpu.so.1.125.0 libdrm_amdgpu.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libdrm_intel.so.1.125.0 libdrm_intel.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libdrm_nouveau.so.2.125.0 libdrm_nouveau.so.2
-add_symlink x86_64-linux-gnu /usr/lib/libdrm_radeon.so.1.125.0 libdrm_radeon.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libdrm.so.2.125.0 libdrm.so.2
-add_symlink x86_64-linux-gnu /usr/lib/libedit.so.0.0.75 libedit.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libEGL_mesa.so.0.0.0 libEGL_mesa.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libEGL.so.1.1.0 libEGL.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libelf-0.193.so libelf.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libexpat.so.1.10.2 libexpat.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libffi.so.8 libffi.so.8
-add_symlink x86_64-linux-gnu /usr/lib/libgallium-25.1.7-arch1.1.so libgallium-25.1.7-arch1.1.so
-add_symlink x86_64-linux-gnu /usr/lib/libgamemode.so.0 libgamemode.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libgamemodeauto.so.0 libgamemodeauto.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libgbm.so.1.0.0 libgbm.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libgcc_s.so.1 libgcc_s.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libGLdispatch.so.0.0.0 libGLdispatch.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libGLESv2.so.2.1.0 libGLESv2.so.2
-add_symlink x86_64-linux-gnu /usr/lib/libGL.so.1.7.0 libGL.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libGLX_mesa.so.0.0.0 libGLX_indirect.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libGLX_mesa.so.0.0.0 libGLX_mesa.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libGLX.so.0.0.0 libGLX.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libicudata.so.76.1 libicudata.so.76
-add_symlink x86_64-linux-gnu /usr/lib/libicuuc.so.76.1 libicuuc.so.76
-add_symlink x86_64-linux-gnu /usr/lib/libidn2.so.0.4.0 libidn2.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libLLVM.so.20.1 libLLVM.so.20.1
-add_symlink x86_64-linux-gnu /usr/lib/liblzma.so.5.8.1 liblzma.so.5
-add_symlink x86_64-linux-gnu /usr/lib/libmemusage.so libmemusage.so
-add_symlink x86_64-linux-gnu /usr/lib/libm.so.6 libm.so.6
-add_symlink x86_64-linux-gnu /usr/lib/libmvec.so.1 libmvec.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libncursesw.so.6.5 libncursesw.so.6
-add_symlink x86_64-linux-gnu /usr/lib/libnsl.so.1 libnsl.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libnss_compat.so.2 libnss_compat.so.2
-add_symlink x86_64-linux-gnu /usr/lib/libnss_db.so.2 libnss_db.so.2
-add_symlink x86_64-linux-gnu /usr/lib/libnss_dns.so.2 libnss_dns.so.2
-add_symlink x86_64-linux-gnu /usr/lib/libnss_files.so.2 libnss_files.so.2
-add_symlink x86_64-linux-gnu /usr/lib/libOpenCL.so.1.0.0 libOpenCL.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libOpenGL.so.0.0.0 libOpenGL.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libpciaccess.so.0.11.1 libpciaccess.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libpcprofile.so libpcprofile.so
-add_symlink x86_64-linux-gnu /usr/lib/libpthread.so.0 libpthread.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libresolv.so.2 libresolv.so.2
-add_symlink x86_64-linux-gnu /usr/lib/librt.so.1 librt.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libsensors.so.5.0.0 libsensors.so.5
-add_symlink x86_64-linux-gnu /usr/lib/libSPIRV-Tools.so libSPIRV-Tools.so
-add_symlink x86_64-linux-gnu /usr/lib/libstdc++.so.6.0.34 libstdc++.so.6
-add_symlink x86_64-linux-gnu /usr/lib/libsystemd.so.0.40.0 libsystemd.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libthread_db.so.1 libthread_db.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libudev.so.1.7.10 libudev.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libunistring.so.5.2.0 libunistring.so.5
-add_symlink x86_64-linux-gnu /usr/lib/libutil.so.1 libutil.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libva-drm.so.2.2200.0 libva-drm.so.2
-add_symlink x86_64-linux-gnu /usr/lib/libva-glx.so.2.2200.0 libva-glx.so.2
-add_symlink x86_64-linux-gnu /usr/lib/libva.so.2.2200.0 libva.so.2
-add_symlink x86_64-linux-gnu /usr/lib/libva-x11.so.2.2200.0 libva-x11.so.2
-add_symlink x86_64-linux-gnu /usr/lib/libvdpau.so.1.0.0 libvdpau.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libvulkan.so.1.4.321 libvulkan.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libwayland-client.so.0.24.0 libwayland-client.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libwayland-server.so.0.24.0 libwayland-server.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libX11.so.6.4.0 libX11.so.6
-add_symlink x86_64-linux-gnu /usr/lib/libX11-xcb.so.1.0.0 libX11-xcb.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libXau.so.6.0.0 libXau.so.6
-add_symlink x86_64-linux-gnu /usr/lib/libxcb-dri3.so.0.1.0 libxcb-dri3.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libxcb-glx.so.0.0.0 libxcb-glx.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libxcb-keysyms.so.1.0.0 libxcb-keysyms.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libxcb-present.so.0.0.0 libxcb-present.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libxcb-randr.so.0.1.0 libxcb-randr.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libxcb-shm.so.0.0.0 libxcb-shm.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libxcb.so.1.1.0 libxcb.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libxcb-sync.so.1.0.0 libxcb-sync.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libxcb-xfixes.so.0.0.0 libxcb-xfixes.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libxcb-xkb.so.1.0.0 libxcb-xkb.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libXdmcp.so.6.0.0 libXdmcp.so.6
-add_symlink x86_64-linux-gnu /usr/lib/libXext.so.6.4.0 libXext.so.6
-add_symlink x86_64-linux-gnu /usr/lib/libXfixes.so.3.1.0 libXfixes.so.3
-add_symlink x86_64-linux-gnu /usr/lib/libxkbcommon.so.0.11.0 libxkbcommon.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libxkbcommon-x11.so.0.11.0 libxkbcommon-x11.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libxml2.so.16.0.5 libxml2.so.16
-# add_symlink x86_64-linux-gnu /usr/lib/libXNVCtrl.so.0.0.0 libXNVCtrl.so.0
-add_symlink x86_64-linux-gnu /usr/lib/libxshmfence.so.1.0.0 libxshmfence.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libXxf86vm.so.1.0.0 libXxf86vm.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libz.so.1.3.1 libz.so.1
-add_symlink x86_64-linux-gnu /usr/lib/libzstd.so.1.5.7 libzstd.so.1
+add_symlink libanl.so.1
+add_symlink libBrokenLocale.so.1
+add_symlink libcap.so.2
+add_symlink libc.so.6
+add_symlink libdbus-1.so.3
+add_symlink libdl.so.2
+add_symlink libdrm_amdgpu.so.1
+add_symlink libdrm_intel.so.1
+add_symlink libdrm_nouveau.so.2
+add_symlink libdrm_radeon.so.1
+add_symlink libdrm.so.2
+add_symlink libedit.so.0
+add_symlink libEGL_mesa.so.0
+add_symlink libEGL.so.1
+add_symlink libelf.so.1
+add_symlink libexpat.so.1
+add_symlink libffi.so.8
+add_symlink libgbm.so.1
+add_symlink libgcc_s.so.1
+add_symlink libGLdispatch.so.0
+add_symlink libGLESv2.so.2
+add_symlink libGL.so.1
+add_symlink libGLX_indirect.so.0
+add_symlink libGLX_mesa.so.0
+add_symlink libGLX.so.0
+add_symlink libicudata.so.76
+add_symlink libicuuc.so.76
+add_symlink libidn2.so.0
+add_symlink liblzma.so.5
+add_symlink libmemusage.so
+add_symlink libm.so.6
+add_symlink libmvec.so.1
+add_symlink libncursesw.so.6
+add_symlink libnsl.so.1
+add_symlink libnss_compat.so.2
+add_symlink libnss_db.so.2
+add_symlink libnss_dns.so.2
+add_symlink libnss_files.so.2
+add_symlink libOpenCL.so.1
+add_symlink libOpenGL.so.0
+add_symlink libpciaccess.so.0
+add_symlink libpcprofile.so
+add_symlink libpthread.so.0
+add_symlink libresolv.so.2
+add_symlink librt.so.1
+add_symlink libsensors.so.5
+add_symlink libSPIRV-Tools.so
+add_symlink libstdc++.so.6
+add_symlink libsystemd.so.0
+add_symlink libthread_db.so.1
+add_symlink libudev.so.1
+add_symlink libunistring.so.5
+add_symlink libutil.so.1
+add_symlink libva-drm.so.2
+add_symlink libva-glx.so.2
+add_symlink libva.so.2
+add_symlink libva-x11.so.2
+add_symlink libvdpau.so.1
+add_symlink libvulkan.so.1
+add_symlink libwayland-client.so.0
+add_symlink libwayland-server.so.0
+add_symlink libX11.so.6
+add_symlink libX11-xcb.so.1
+add_symlink libXau.so.6
+add_symlink libxcb-dri3.so.0
+add_symlink libxcb-glx.so.0
+add_symlink libxcb-keysyms.so.1
+add_symlink libxcb-present.so.0
+add_symlink libxcb-randr.so.0
+add_symlink libxcb-shm.so.0
+add_symlink libxcb.so.1
+add_symlink libxcb-sync.so.1
+add_symlink libxcb-xfixes.so.0
+add_symlink libxcb-xkb.so.1
+add_symlink libXdmcp.so.6
+add_symlink libXext.so.6
+add_symlink libXfixes.so.3
+add_symlink libxkbcommon.so.0
+add_symlink libxkbcommon-x11.so.0
+add_symlink libxml2.so.16
+add_symlink libxshmfence.so.1
+add_symlink libXxf86vm.so.1
+add_symlink libz.so.1
+add_symlink libzstd.so.1
 
-# 32 bit
-add_symlink i386-linux-gnu /usr/lib32/libanl.so.1 libanl.so.1
-add_symlink i386-linux-gnu /usr/lib32/libBrokenLocale.so.1 libBrokenLocale.so.1
-add_symlink i386-linux-gnu /usr/lib32/libcap.so.2.76 libcap.so.2
-add_symlink i386-linux-gnu /usr/lib32/libc.so.6 libc.so.6
-add_symlink i386-linux-gnu /usr/lib32/libdbus-1.so.3 libdbus-1.so.3
-add_symlink i386-linux-gnu /usr/lib32/libdl.so.2 libdl.so.2
-add_symlink i386-linux-gnu /usr/lib32/libdrm_amdgpu.so.1.125.0 libdrm_amdgpu.so.1
-add_symlink i386-linux-gnu /usr/lib32/libdrm_intel.so.1.125.0 libdrm_intel.so.1
-add_symlink i386-linux-gnu /usr/lib32/libdrm_nouveau.so.2.125.0 libdrm_nouveau.so.2
-add_symlink i386-linux-gnu /usr/lib32/libdrm_radeon.so.1.125.0 libdrm_radeon.so.1
-add_symlink i386-linux-gnu /usr/lib32/libdrm.so.2.125.0 libdrm.so.2
-add_symlink i386-linux-gnu /usr/lib32/libEGL_mesa.so.0.0.0 libEGL_mesa.so.0
-add_symlink i386-linux-gnu /usr/lib32/libEGL.so.1.1.0 libEGL.so.1
-add_symlink i386-linux-gnu /usr/lib32/libelf-0.193.so libelf.so.1
-add_symlink i386-linux-gnu /usr/lib32/libexpat.so.1.10.2 libexpat.so.1
-add_symlink i386-linux-gnu /usr/lib32/libffi.so.8 libffi.so.8
-add_symlink i386-linux-gnu /usr/lib32/libgallium-25.1.7-arch1.1.so libgallium-25.1.7-arch1.1.so
-add_symlink i386-linux-gnu /usr/lib32/libgamemode.so.0 libgamemode.so.0
-add_symlink i386-linux-gnu /usr/lib32/libgamemodeauto.so.0 libgamemodeauto.so.0
-add_symlink i386-linux-gnu /usr/lib32/libgbm.so.1.0.0 libgbm.so.1
-add_symlink i386-linux-gnu /usr/lib32/libgcc_s.so.1 libgcc_s.so.1
-add_symlink i386-linux-gnu /usr/lib32/libGLdispatch.so.0.0.0 libGLdispatch.so.0
-add_symlink i386-linux-gnu /usr/lib32/libGLESv2.so.2.1.0 libGLESv2.so.2
-add_symlink i386-linux-gnu /usr/lib32/libGL.so.1.7.0 libGL.so.1
-add_symlink i386-linux-gnu /usr/lib32/libGLX_mesa.so.0.0.0 libGLX_mesa.so.0
-add_symlink i386-linux-gnu /usr/lib32/libGLX.so.0.0.0 libGLX.so.0
-add_symlink i386-linux-gnu /usr/lib32/libicudata.so.76.1 libicudata.so.76
-add_symlink i386-linux-gnu /usr/lib32/libicuuc.so.76.1 libicuuc.so.76
-add_symlink i386-linux-gnu /usr/lib32/libidn2.so.0.4.0 libidn2.so.0
-add_symlink i386-linux-gnu /usr/lib32/libLLVM.so.20.1 libLLVM.so.20.1
-add_symlink i386-linux-gnu /usr/lib32/liblzma.so.5.8.1 liblzma.so.5
-add_symlink i386-linux-gnu /usr/lib32/libmemusage.so libmemusage.so
-add_symlink i386-linux-gnu /usr/lib32/libm.so.6 libm.so.6
-add_symlink i386-linux-gnu /usr/lib32/libnsl.so.1 libnsl.so.1
-add_symlink i386-linux-gnu /usr/lib32/libnss_compat.so.2 libnss_compat.so.2
-add_symlink i386-linux-gnu /usr/lib32/libnss_db.so.2 libnss_db.so.2
-add_symlink i386-linux-gnu /usr/lib32/libnss_dns.so.2 libnss_dns.so.2
-add_symlink i386-linux-gnu /usr/lib32/libnss_files.so.2 libnss_files.so.2
-add_symlink i386-linux-gnu /usr/lib32/libOpenGL.so.0.0.0 libOpenGL.so.0
-add_symlink i386-linux-gnu /usr/lib32/libpciaccess.so.0.11.1 libpciaccess.so.0
-add_symlink i386-linux-gnu /usr/lib32/libpcprofile.so libpcprofile.so
-add_symlink i386-linux-gnu /usr/lib32/libpthread.so.0 libpthread.so.0
-add_symlink i386-linux-gnu /usr/lib32/libresolv.so.2 libresolv.so.2
-add_symlink i386-linux-gnu /usr/lib32/librt.so.1 librt.so.1
-add_symlink i386-linux-gnu /usr/lib32/libsensors.so.5.0.0 libsensors.so.5
-add_symlink i386-linux-gnu /usr/lib32/libSPIRV-Tools.so libSPIRV-Tools.so
-add_symlink i386-linux-gnu /usr/lib32/libstdc++.so.6.0.34 libstdc++.so.6
-add_symlink i386-linux-gnu /usr/lib32/libsystemd.so.0.40.0 libsystemd.so.0
-add_symlink i386-linux-gnu /usr/lib32/libthread_db.so.1 libthread_db.so.1
-add_symlink i386-linux-gnu /usr/lib32/libudev.so.1.7.10 libudev.so.1
-add_symlink i386-linux-gnu /usr/lib32/libunistring.so.5.2.0 libunistring.so.5
-add_symlink i386-linux-gnu /usr/lib32/libutil.so.1 libutil.so.1
-add_symlink i386-linux-gnu /usr/lib32/libva-drm.so.2.2200.0 libva-drm.so.2
-add_symlink i386-linux-gnu /usr/lib32/libva-glx.so.2.2200.0 libva-glx.so.2
-add_symlink i386-linux-gnu /usr/lib32/libva.so.2.2200.0 libva.so.2
-add_symlink i386-linux-gnu /usr/lib32/libva-x11.so.2.2200.0 libva-x11.so.2
-add_symlink i386-linux-gnu /usr/lib32/libvulkan.so.1.4.321 libvulkan.so.1
-add_symlink i386-linux-gnu /usr/lib32/libwayland-client.so.0.23.1 libwayland-client.so.0
-add_symlink i386-linux-gnu /usr/lib32/libwayland-server.so.0.23.1 libwayland-server.so.0
-add_symlink i386-linux-gnu /usr/lib32/libX11.so.6.4.0 libX11.so.6
-add_symlink i386-linux-gnu /usr/lib32/libX11-xcb.so.1.0.0 libX11-xcb.so.1
-add_symlink i386-linux-gnu /usr/lib32/libXau.so.6.0.0 libXau.so.6
-add_symlink i386-linux-gnu /usr/lib32/libxcb-dri3.so.0.1.0 libxcb-dri3.so.0
-add_symlink i386-linux-gnu /usr/lib32/libxcb-glx.so.0.0.0 libxcb-glx.so.0
-add_symlink i386-linux-gnu /usr/lib32/libxcb-keysyms.so.1.0.0 libxcb-keysyms.so.1
-add_symlink i386-linux-gnu /usr/lib32/libxcb-present.so.0.0.0 libxcb-present.so.0
-add_symlink i386-linux-gnu /usr/lib32/libxcb-randr.so.0.1.0 libxcb-randr.so.0
-add_symlink i386-linux-gnu /usr/lib32/libxcb-shm.so.0.0.0 libxcb-shm.so.0
-add_symlink i386-linux-gnu /usr/lib32/libxcb.so.1.1.0 libxcb.so.1
-add_symlink i386-linux-gnu /usr/lib32/libxcb-sync.so.1.0.0 libxcb-sync.so.1
-add_symlink i386-linux-gnu /usr/lib32/libxcb-xfixes.so.0.0.0 libxcb-xfixes.so.0
-add_symlink i386-linux-gnu /usr/lib32/libXdmcp.so.6.0.0 libXdmcp.so.6
-add_symlink i386-linux-gnu /usr/lib32/libXext.so.6.4.0 libXext.so.6
-add_symlink i386-linux-gnu /usr/lib32/libXfixes.so.3.1.0 libXfixes.so.3
-add_symlink i386-linux-gnu /usr/lib32/libxkbcommon.so.0.11.0 libxkbcommon.so.0
-add_symlink i386-linux-gnu /usr/lib32/libxml2.so.16.0.5 libxml2.so.16
-add_symlink i386-linux-gnu /usr/lib32/libxshmfence.so.1.0.0 libxshmfence.so.1
-add_symlink i386-linux-gnu /usr/lib32/libXxf86vm.so.1.0.0 libXxf86vm.so.1
-add_symlink i386-linux-gnu /usr/lib32/libz.so.1.3.1 libz.so.1
-add_symlink i386-linux-gnu /usr/lib32/libzstd.so.1.5.7 libzstd.so.1
+# These are version-specific apparently
+add_symlink libLLVM.so.20.1
+add_symlink libgallium-25.2.1-arch1.1.so
+
+add_symlink libgamemode.so.0
+add_symlink libgamemodeauto.so.0
 
 passwd=$(cat <<EOF
 ${USER}:x:$(id -u):$(id -g)::/home/${USER}:/bin/bash
